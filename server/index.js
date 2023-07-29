@@ -19,6 +19,18 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 })
 
+
+app.get('/data', async(req, res) => {
+    try {
+        console.time('goru')
+        const todos = await UserSc.find({}).sort('-date');
+        console.timeEnd('goru')
+        res.send({todos})
+    } catch (err) {
+        res.json(err);
+    }
+})
+
 app.post('/send', async(req, res) => {
     console.log(req.body);
 
@@ -33,9 +45,21 @@ app.post('/send', async(req, res) => {
         res.send(req.body);
         const newUser = new UserSc(data);
         newUser.save();
-        
+
     } catch (err) {
-        console.log(err);
+        res.json(err);
+    }
+})
+
+
+app.delete('/data/:id',async(req, res) => {
+    const id = req.params.id;
+
+    try {
+        await UserSc.findByIdAndRemove(id);
+        res.send('Successfully Deleted.')
+    } catch (err) {
+        res.status(404).send(err);
     }
 })
 
