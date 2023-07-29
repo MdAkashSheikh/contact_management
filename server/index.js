@@ -22,9 +22,9 @@ app.get('/', (req, res) => {
 
 app.get('/data', async(req, res) => {
     try {
-        console.time('goru')
+        console.log('goru')
         const todos = await UserSc.find({}).sort('-date');
-        console.timeEnd('goru')
+        console.log('goru2')
         res.send({todos})
     } catch (err) {
         res.json(err);
